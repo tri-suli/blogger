@@ -2,27 +2,19 @@ import {useEffect, useState} from "react";
 import _ from "lodash";
 import {Search} from "react-bootstrap-icons";
 import {
-  Card,
-  CardBody, CardSubtitle, CardText, CardTitle,
+  Card, CardBody, CardSubtitle, CardText, CardTitle,
   Col,
-  Container,
-  Input,
-  InputGroup,
-  InputGroupText,
-  Nav,
-  NavItem,
-  NavLink,
   Row
 } from "reactstrap";
 
 import blogService from "../services/blog.service";
+import Layout from "../components/Layout";
 
 function Home() {
   const [blogKeyword, setBlogKeyword] = useState('');
   const [blogs, setBlogs] = useState([]);
 
   const handleSearchBlogs = _.debounce((value) => {
-    console.log(value)
     setBlogKeyword(value)
   }, 1000)
 
@@ -43,34 +35,7 @@ function Home() {
   }, [blogKeyword])
 
   return (
-    <Container>
-      <Row className="p-3">
-        <Col sm={12} md={8}>
-          <Nav pills fill>
-            <NavItem>
-              <NavLink
-                active
-                href="#"
-              >
-                {'Blogs'}
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="#">
-                {'Schedules'}
-              </NavLink>
-            </NavItem>
-          </Nav>
-        </Col>
-        <Col sm={12} md={4}>
-          <InputGroup>
-            <Input onChange={(e) => handleSearchBlogs(e.target.value)} placeholder="Search blogs"/>
-            <InputGroupText>
-              <Search/>
-            </InputGroupText>
-          </InputGroup>
-        </Col>
-      </Row>
+    <Layout searchPlaceholder={'Search blogs'} onSearchChange={(value) => handleSearchBlogs(value)}>
       <Row>
         {blogs.map((blog) => (
           <Col sm={12} md={4} lg={3} key={blog._id}>
@@ -96,7 +61,7 @@ function Home() {
           </Col>
         ))}
       </Row>
-    </Container>
+    </Layout>
   );
 }
 
